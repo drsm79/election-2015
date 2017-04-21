@@ -66,11 +66,11 @@ def main(show_win_over=False, show_stay_home=False):
         if frac <= 0.1:
             if show_win_over:
                 print '{} ({}) needed {} of stay at home vote to win over {} ({}) in {}'.format(
-                    top_two[0][0],
-                    top_two[0][1],
-                    percent(frac),
                     top_two[1][0],
                     top_two[1][1],
+                    percent(frac),
+                    top_two[0][0],
+                    top_two[0][1],
                     c
                 )
             cnt['<=10 pc of home win'] += 1
