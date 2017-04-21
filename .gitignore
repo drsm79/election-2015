@@ -2,6 +2,10 @@
 __pycache__/
 *.py[cod]
 *$py.class
+Pipfile.lock
+
+# Data files
+*.xlsx
 
 # C extensions
 *.so
