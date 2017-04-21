@@ -55,14 +55,15 @@ def process_xls(xls):
     return constituencies
 
 
-def main(show_win_over=False, show_stay_home=False):
+def main(show_win_over=False, show_stay_home=False, show_close=False):
     xl = '2015-UK-general-election-data-results-WEB.xlsx'
     constituencies = process_xls(xl)
     cnt = Counter()
     for c in constituencies:
         cnt['total'] += 1
         top_two = c.counter.most_common(2)
-        frac = (top_two[0][1] - top_two[1][1]) / (c.electorate - c.votes)
+        delta = top_two[0][1] - top_two[1][1]
+        frac = delta / (c.electorate - c.votes)
         if frac <= 0.1:
             if show_win_over:
                 print '{} ({}) needed {} of stay at home vote to win over {} ({}) in {}'.format(
@@ -78,6 +79,20 @@ def main(show_win_over=False, show_stay_home=False):
             if show_stay_home:
                 print c, c.winner(), c.electorate - c.votes
             cnt['stay home win'] += 1
+        shown = False
+        for lim in [50, 100, 250, 500]:
+            if delta <= lim:
+                if show_close and not shown:
+                    shown = True
+                    print '{} ({}) needed {} votes to win over {} ({}) in {}'.format(
+                        top_two[1][0],
+                        top_two[1][1],
+                        delta + 1,
+                        top_two[0][0],
+                        top_two[0][1],
+                        c
+                    )
+                cnt['close call ({})'.format(lim)] += 1
     print cnt
 
 
